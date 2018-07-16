@@ -6,12 +6,12 @@ import java.io.*;
 import java.util.List;
 
 public class RoadMap extends GUI {
-    private static final File smallNodesPath = new File("src/Data/small/nodeID-lat-lon.tab");
-    private static final File smallRoadsPath = new File("src/Data/small/roadSeg-roadID-length-nodeID-nodeID-coords.tab");
-    private static final File smallSegmentsPath = new File("src/Data/small/roadID-roadInfo.tab");
-    private static final File largeNodesPath = new File("src/Data/large/nodeID-lat-lon.tab");
-    private static final File largeRoadsPath = new File("src/Data/large/roadSeg-roadID-length-nodeID-nodeID-coords.tab");
-    private static final File largeSegmentsPath = new File("src/Data/large/roadID-roadInfo.tab");
+    private static final File smallNodesPath = new File("Data/small/nodeID-lat-lon.tab");
+    private static final File smallRoadsPath = new File("Data/small/roadSeg-roadID-length-nodeID-nodeID-coords.tab");
+    private static final File smallSegmentsPath = new File("Data/small/roadID-roadInfo.tab");
+    private static final File largeNodesPath = new File("Data/large/nodeID-lat-lon.tab");
+    private static final File largeRoadsPath = new File("Data/large/roadSeg-roadID-length-nodeID-nodeID-coords.tab");
+    private static final File largeSegmentsPath = new File("Data/large/roadID-roadInfo.tab");
     private static final File polygonsPath = new File("");
 
     public RoadMap(boolean isTest) {
