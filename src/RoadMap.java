@@ -3,7 +3,6 @@ import Graph.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.io.*;
-import java.util.List;
 
 public class RoadMap extends GUI {
     private static final File smallNodesPath = new File("Data/small/nodeID-lat-lon.tab");
@@ -78,6 +77,17 @@ public class RoadMap extends GUI {
     @Override
     protected void onLoad(File nodes, File roads, File segments, File polygons) {
         Graph graph = new Graph();
+        loadNodes(nodes, graph);
+        loadEdges(segments, graph);
+        loadRoads(roads, graph);
+    }
+
+    /**
+     * Parses node file and saves it in the graph as a node object
+     * @param nodes - the nodes file
+     * @param graph - the graph to store the nodes in
+     */
+    private void loadNodes(File nodes, Graph graph) {
         try {
             BufferedReader fileReader = new BufferedReader(new FileReader(nodes));
             String line;
@@ -93,6 +103,24 @@ public class RoadMap extends GUI {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Parses segment file and saves it in the graph as an edge object
+     * @param edges - the segments file
+     * @param graph - the graph to store the segments in
+     */
+    private void loadEdges(File edges, Graph graph) {
+
+    }
+
+    /**
+     * Parses roads file and saves it in the graph as a road object
+     * @param roads - the roads file
+     * @param graph - the graph to store the roads in
+     */
+    private void loadRoads(File roads, Graph graph) {
+
     }
 
     public static void main(String[] args) { new RoadMap(true); }
