@@ -1,5 +1,6 @@
 package Graph;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,13 +19,22 @@ public class Node {
         this.outgoingList = new ArrayList<>();
     }
 
-    public int getId() { return id; }
+    public int getId() { return this.id; }
 
-    public double getLatitude() { return latitude; }
+    public double getLatitude() { return this.latitude; }
 
-    public double getLongitude() { return longitude; }
+    public double getLongitude() { return this.longitude; }
 
-    public List<Edge> getOutgoingList() { return outgoingList; }
+    public List<Edge> getOutgoingList() { return this.outgoingList; }
 
-    public List<Edge> getIncomingList() { return incomingList; }
+    public List<Edge> getIncomingList() { return this.incomingList; }
+
+    public boolean addToOutgoingList(Edge edge) { return this.outgoingList.add(edge); }
+
+    public boolean addToIncomingList(Edge edge) { return this.incomingList.add(edge); }
+
+    public void draw(Graphics g) {
+//        TODO implement this
+    }
+
 }

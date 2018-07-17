@@ -1,4 +1,6 @@
-import java.awt.Point;
+package Graph;
+
+import java.awt.*;
 
 /**
  * A Location is a point in a 2D coordinate system, with increasing x from west
@@ -62,7 +64,7 @@ public class Location {
 	 * origin and scale. This is effectively the opposite of the asPoint method.
 	 */
 	public static Location newFromPoint(Point point, Location origin,
-			double scale) {
+                                        double scale) {
 		return new Location(point.x / scale + origin.x, origin.y - point.y
 				/ scale);
 	}

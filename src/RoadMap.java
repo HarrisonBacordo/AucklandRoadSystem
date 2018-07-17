@@ -3,17 +3,20 @@ import Graph.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.io.*;
+import java.util.Arrays;
 
 public class RoadMap extends GUI {
     private static final File smallNodesPath = new File("Data/small/nodeID-lat-lon.tab");
-    private static final File smallRoadsPath = new File("Data/small/roadSeg-roadID-length-nodeID-nodeID-coords.tab");
-    private static final File smallSegmentsPath = new File("Data/small/roadID-roadInfo.tab");
+    private static final File smallSegmentsPath = new File("Data/small/roadSeg-roadID-length-nodeID-nodeID-coords.tab");
+    private static final File smallRoadsPath = new File("Data/small/roadID-roadInfo.tab");
     private static final File largeNodesPath = new File("Data/large/nodeID-lat-lon.tab");
-    private static final File largeRoadsPath = new File("Data/large/roadSeg-roadID-length-nodeID-nodeID-coords.tab");
-    private static final File largeSegmentsPath = new File("Data/large/roadID-roadInfo.tab");
+    private static final File largeSegmentsPath = new File("Data/large/roadSeg-roadID-length-nodeID-nodeID-coords.tab");
+    private static final File largeRoadsPath = new File("Data/large/roadID-roadInfo.tab");
     private static final File polygonsPath = new File("");
+    private Graph graph;
 
     public RoadMap(boolean isTest) {
+        this.graph = new Graph();
         if (isTest) {
             onLoad(smallNodesPath, smallRoadsPath, smallSegmentsPath, polygonsPath);
         } else {
@@ -29,7 +32,7 @@ public class RoadMap extends GUI {
      */
     @Override
     protected void redraw(Graphics g) {
-
+//        graph.draw(g);
     }
 
     /**
@@ -40,7 +43,6 @@ public class RoadMap extends GUI {
      */
     @Override
     protected void onClick(MouseEvent e) {
-
     }
 
     /**
@@ -76,10 +78,10 @@ public class RoadMap extends GUI {
      */
     @Override
     protected void onLoad(File nodes, File roads, File segments, File polygons) {
-        Graph graph = new Graph();
         loadNodes(nodes, graph);
-        loadEdges(segments, graph);
         loadRoads(roads, graph);
+        loadEdges(segments, graph);
+        System.out.println();
     }
 
     /**
@@ -111,7 +113,29 @@ public class RoadMap extends GUI {
      * @param graph - the graph to store the segments in
      */
     private void loadEdges(File edges, Graph graph) {
-
+        try {
+            BufferedReader fileReader = new BufferedReader(new FileReader(edges));
+            String line;
+            fileReader.readLine();
+            while((line = fileReader.readLine()) != null) {
+                String[] lineValues = line.split("\t");
+                int roadId = Integer.parseInt(lineValues[0]);
+                int toId = Integer.parseInt(lineValues[2]);
+                int fromId = Integer.parseInt(lineValues[3]);
+                Edge edge = new Edge(
+                        Integer.parseInt(lineValues[0]),
+                        Double.parseDouble(lineValues[1]),
+                        graph.getNodeOfId(toId),
+                        graph.getNodeOfId(fromId),
+                        Arrays.copyOfRange(lineValues, 4, lineValues.length-1)
+                );
+                graph.getRoadOfId(roadId).addEdge(edge);
+                graph.getNodeOfId(toId).addToIncomingList(edge);
+                graph.getNodeOfId(fromId).addToOutgoingList(edge);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -120,7 +144,17 @@ public class RoadMap extends GUI {
      * @param graph - the graph to store the roads in
      */
     private void loadRoads(File roads, Graph graph) {
-
+        try {
+            BufferedReader fileReader = new BufferedReader(new FileReader(roads));
+            String line;
+            fileReader.readLine();
+            while((line = fileReader.readLine()) != null) {
+                Road road = new Road(line.split("\t"));
+                graph.addRoad(road);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) { new RoadMap(true); }
