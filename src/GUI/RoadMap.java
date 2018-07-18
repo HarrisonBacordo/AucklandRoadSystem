@@ -1,3 +1,5 @@
+package GUI;
+
 import Graph.*;
 
 import java.awt.*;
@@ -14,6 +16,8 @@ public class RoadMap extends GUI {
     private static final File largeRoadsPath = new File("Data/large/roadID-roadInfo.tab");
     private static final File polygonsPath = new File("");
     private Graph graph;
+    private double origin;
+    private double scale;
 
     public RoadMap(boolean isTest) {
         this.graph = new Graph();
@@ -32,7 +36,7 @@ public class RoadMap extends GUI {
      */
     @Override
     protected void redraw(Graphics g) {
-//        graph.draw(g);
+        graph.draw(g, origin, scale);
     }
 
     /**
@@ -62,7 +66,7 @@ public class RoadMap extends GUI {
      */
     @Override
     protected void onMove(Move m) {
-
+        graph.move(m);
     }
 
     /**

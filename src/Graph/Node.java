@@ -6,24 +6,22 @@ import java.util.List;
 
 public class Node {
     private int id;
-    private double latitude;
-    private double longitude;
+    private Location location;
     private List<Edge> outgoingList;
     private List<Edge> incomingList;
 
     public Node(int id, double latitude, double longitude) {
         this.id = id;
-        this.latitude = latitude;
-        this.longitude = longitude;
+        this.location = Location.newFromLatLon(latitude, longitude);
         this.incomingList = new ArrayList<>();
         this.outgoingList = new ArrayList<>();
     }
 
     public int getId() { return this.id; }
 
-    public double getLatitude() { return this.latitude; }
+    public Location getLocation() { return this.location; }
 
-    public double getLongitude() { return this.longitude; }
+    public void setLocation(Location location) { this.location = location; }
 
     public List<Edge> getOutgoingList() { return this.outgoingList; }
 
@@ -33,8 +31,9 @@ public class Node {
 
     public boolean addToIncomingList(Edge edge) { return this.incomingList.add(edge); }
 
-    public void draw(Graphics g) {
-//        TODO implement this
+    public void draw(Graphics g, double origin, double scale) {
+        g.setColor(Color.cyan);
+        g.fillOval((int)location.x, (int)location.y, 20, 20);
     }
 
 }

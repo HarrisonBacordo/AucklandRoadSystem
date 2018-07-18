@@ -1,3 +1,5 @@
+package GUI;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -29,12 +31,12 @@ import javax.swing.border.Border;
 import javax.swing.text.DefaultCaret;
 
 /**
- * This is a template GUI that you can use for your mapping program. It is an
+ * This is a template GUI.GUI that you can use for your mapping program. It is an
  * *abstract class*, which means you'll need to extend it in your own program.
- * For a simple example of how to do this, have a look at the SquaresExample
+ * For a simple example of how to do this, have a look at the GUI.SquaresExample
  * class.
  * 
- * This GUI uses Swing, not the first-year UI library. Swing is not the focus of
+ * This GUI.GUI uses Swing, not the first-year UI library. Swing is not the focus of
  * this course, but it would be to your benefit if you took some time to
  * understand how this class works.
  * 

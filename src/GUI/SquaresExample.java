@@ -1,3 +1,5 @@
+package GUI;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -8,7 +10,7 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * This is a small example class to demonstrate extending the GUI class and
+ * This is a small example class to demonstrate extending the GUI.GUI class and
  * implementing the abstract methods. Instead of doing anything maps-related, it
  * draws some squares to the drawing area which are removed when clicked. Some
  * information is given in the text area, and pressing any of the navigation

@@ -1,10 +1,17 @@
 package Graph;
 
+import GUI.GUI;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Graph {
+    private static final int MOVE_EAST_VALUE = -10;
+    private static final int MOVE_WEST_VALUE = 10;
+    private static final int MOVE_NORTH_VALUE = 10;
+    private static final int MOVE_SOUTH_VALUE = -10;
+
     private List<Node> nodeList;
     private List<Road> roadList;
 
@@ -36,13 +43,44 @@ public class Graph {
         }
         return null;
     }
+
+    public void move(GUI.Move m) {
+        switch(m) {
+            case NORTH:
+                moveY(MOVE_NORTH_VALUE);
+                break;
+            case SOUTH:
+                moveY(MOVE_SOUTH_VALUE);
+                break;
+            case EAST:
+                moveX(MOVE_EAST_VALUE);
+                break;
+            case WEST:
+                moveX(MOVE_WEST_VALUE);
+                break;
+        }
+    }
+
+    private void moveX(int move) {
+        for(Node node : nodeList) {
+            node.setLocation(new Location(node.getLocation().x + move, node.getLocation().y));
+        }
+//        TODO segment movement
+    }
+
+    private void moveY(int move) {
+        for(Node node : nodeList) {
+            node.setLocation(new Location(node.getLocation().x, node.getLocation().y + move));
+        }
+        //        TODO segment movement
+    }
     
-    public void draw(Graphics g){
+    public void draw(Graphics g, double origin, double scale){
         for (Node node : nodeList) {
-            node.draw(g);
+            node.draw(g, origin, scale);
         }
         for (Road road : roadList) {
-            road.draw(g);
+            road.draw(g, origin, scale);
         }
     }
 }

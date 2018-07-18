@@ -35,11 +35,11 @@ public class Edge {
         return this.to;
     }
 
-    public void draw(Graphics g) {
+    public void draw(Graphics g, double origin, double scale) {
 //        TODO implement this
         g.setColor(Color.BLUE);
         for (Location location : coords) {
-            g.drawOval((int) location.x, (int) location.y, 2, 2);
+            g.drawOval((int) location.x, (int) location.y, 10, 10);
         }
     }
 
