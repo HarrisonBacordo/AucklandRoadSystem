@@ -16,7 +16,7 @@ public class RoadMap extends GUI {
     private static final File largeRoadsPath = new File("Data/large/roadID-roadInfo.tab");
     private static final File polygonsPath = new File("");
     private Graph graph;
-    private double origin;
+    private Location origin;
     private double scale;
 
     public RoadMap(boolean isTest) {

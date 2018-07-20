@@ -75,7 +75,7 @@ public class Graph {
         //        TODO segment movement
     }
     
-    public void draw(Graphics g, double origin, double scale){
+    public void draw(Graphics g, Location origin, double scale){
         for (Node node : nodeList) {
             node.draw(g, origin, scale);
         }

@@ -31,9 +31,10 @@ public class Node {
 
     public boolean addToIncomingList(Edge edge) { return this.incomingList.add(edge); }
 
-    public void draw(Graphics g, double origin, double scale) {
+    public void draw(Graphics g, Location origin, double scale) {
+        Point p = this.location.asPoint(origin, scale);
         g.setColor(Color.cyan);
-        g.fillOval((int)location.x, (int)location.y, 20, 20);
+        g.fillOval(p.x, p.y, 10, 10);
     }
 
 }

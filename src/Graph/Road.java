@@ -35,7 +35,7 @@ public class Road {
 
     public boolean addEdge(Edge edge) { return this.edgeList.add(edge); }
 
-    public void draw(Graphics g, double origin, double scale) {
+    public void draw(Graphics g, Location origin, double scale) {
         for (Edge edge : edgeList) {
             edge.draw(g, origin, scale);
         }
