@@ -35,13 +35,28 @@ public class Edge {
         return this.to;
     }
 
+    public void applyXMove(int move) {
+        List<Location> temp = new ArrayList<>();
+        for(Location loc : coords) {
+            temp.add(new Location(loc.x + move, loc.y));
+        }
+        this.coords = temp;
+    }
+
+    public void applyYMove(int move) {
+        List<Location> temp = new ArrayList<>();
+        for(Location loc : coords) {
+            temp.add(new Location(loc.x, loc.y + move));
+        }
+        this.coords = temp;
+    }
+
     public void draw(Graphics g, Location origin, double scale) {
-//        TODO implement this
-        g.setColor(Color.BLUE);
+        g.setColor(Color.RED);
         for (int i = 0; i < this.coords.size() - 1; i+=2) {
-            Location point1 = this.coords.get(i);
-            Location point2 = this.coords.get(i + 1);
-            g.drawLine((int)point1.x, (int)point1.y, (int)point2.x, (int)point2.y);
+            Point point1 = this.coords.get(i).asPoint(origin, scale);
+            Point point2 = this.coords.get(i + 1).asPoint(origin, scale);
+            g.drawLine(point1.x, point1.y, point2.x, point2.y);
         }
     }
 

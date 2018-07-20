@@ -35,6 +35,18 @@ public class Road {
 
     public boolean addEdge(Edge edge) { return this.edgeList.add(edge); }
 
+    public void applyXMove(int move) {
+        for(Edge edge : this.edgeList) {
+            edge.applyXMove(move);
+        }
+    }
+
+    public void applyYMove(int move) {
+        for(Edge edge : this.edgeList) {
+            edge.applyYMove(move);
+        }
+    }
+
     public void draw(Graphics g, Location origin, double scale) {
         for (Edge edge : edgeList) {
             edge.draw(g, origin, scale);

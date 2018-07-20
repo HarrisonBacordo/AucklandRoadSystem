@@ -9,8 +9,10 @@ import java.util.List;
 public class Graph {
     private static final int MOVE_EAST_VALUE = -10;
     private static final int MOVE_WEST_VALUE = 10;
-    private static final int MOVE_NORTH_VALUE = 10;
-    private static final int MOVE_SOUTH_VALUE = -10;
+    private static final int MOVE_NORTH_VALUE = -10;
+    private static final int MOVE_SOUTH_VALUE = 10;
+    private static final double ZOOM_IN_VALUE = 0.1;
+    private static final double ZOOM_OUT_VALUE = -0.1;
 
     private List<Node> nodeList;
     private List<Road> roadList;
@@ -47,32 +49,36 @@ public class Graph {
     public void move(GUI.Move m) {
         switch(m) {
             case NORTH:
-                moveY(MOVE_NORTH_VALUE);
+                this.moveY(MOVE_NORTH_VALUE);
                 break;
             case SOUTH:
-                moveY(MOVE_SOUTH_VALUE);
+                this.moveY(MOVE_SOUTH_VALUE);
                 break;
             case EAST:
-                moveX(MOVE_EAST_VALUE);
+                this.moveX(MOVE_EAST_VALUE);
                 break;
             case WEST:
-                moveX(MOVE_WEST_VALUE);
+                this.moveX(MOVE_WEST_VALUE);
                 break;
         }
     }
 
     private void moveX(int move) {
-        for(Node node : nodeList) {
+        for(Node node : this.nodeList) {
             node.setLocation(new Location(node.getLocation().x + move, node.getLocation().y));
         }
-//        TODO segment movement
+        for(Road road : this.roadList) {
+            road.applyXMove(move);
+        }
     }
 
     private void moveY(int move) {
-        for(Node node : nodeList) {
+        for(Node node : this.nodeList) {
             node.setLocation(new Location(node.getLocation().x, node.getLocation().y + move));
         }
-        //        TODO segment movement
+        for(Road road : this.roadList) {
+            road.applyYMove(move);
+        }
     }
     
     public void draw(Graphics g, Location origin, double scale){

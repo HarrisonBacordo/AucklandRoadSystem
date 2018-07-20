@@ -33,8 +33,8 @@ public class Node {
 
     public void draw(Graphics g, Location origin, double scale) {
         Point p = this.location.asPoint(origin, scale);
-        g.setColor(Color.cyan);
-        g.fillOval(p.x, p.y, 10, 10);
+        g.setColor(Color.BLUE);
+        g.fillOval(p.x, p.y, 2, 2);
     }
 
 }

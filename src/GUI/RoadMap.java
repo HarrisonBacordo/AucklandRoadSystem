@@ -15,9 +15,10 @@ public class RoadMap extends GUI {
     private static final File largeSegmentsPath = new File("Data/large/roadSeg-roadID-length-nodeID-nodeID-coords.tab");
     private static final File largeRoadsPath = new File("Data/large/roadID-roadInfo.tab");
     private static final File polygonsPath = new File("");
+    private static final double scaleStep = 1;
     private Graph graph;
-    private Location origin;
-    private double scale;
+    private Location origin = new Location(0, 0);
+    private double scale = 5.0;
 
     public RoadMap(boolean isTest) {
         this.graph = new Graph();
@@ -66,7 +67,16 @@ public class RoadMap extends GUI {
      */
     @Override
     protected void onMove(Move m) {
-        graph.move(m);
+        switch (m) {
+            case ZOOM_IN:
+                this.scale += scaleStep;
+                break;
+            case ZOOM_OUT:
+                this.scale += -scaleStep;
+                break;
+            default:
+                graph.move(m);
+        }
     }
 
     /**
