@@ -34,7 +34,7 @@ public class Node {
     public void draw(Graphics g, Location origin, double scale) {
         Point p = this.location.asPoint(origin, scale);
         g.setColor(Color.BLUE);
-        g.fillOval(p.x, p.y, 2, 2);
+        g.fillOval(p.x, p.y, 5, 5);
     }
 
 }
