@@ -35,6 +35,10 @@ public class Edge {
         return this.to;
     }
 
+    /**
+     *
+     * @param move
+     */
     public void applyXMove(int move) {
         List<Location> temp = new ArrayList<>();
         for(Location loc : coords) {
@@ -43,6 +47,10 @@ public class Edge {
         this.coords = temp;
     }
 
+    /**
+     *
+     * @param move
+     */
     public void applyYMove(int move) {
         List<Location> temp = new ArrayList<>();
         for(Location loc : coords) {
@@ -51,8 +59,19 @@ public class Edge {
         this.coords = temp;
     }
 
-    public void draw(Graphics g, Location origin, double scale) {
-        g.setColor(Color.RED);
+    /**
+     *
+     * @param g
+     * @param origin
+     * @param scale
+     * @param highlight
+     */
+    public void draw(Graphics g, Location origin, double scale, boolean highlight) {
+        Color color = highlight ? Color.RED : Color.GREEN;
+        if (color == Color.RED) {
+            System.out.println();
+        }
+        g.setColor(color);
         for (int i = 0; i < this.coords.size() - 1; i+=2) {
             Point point1 = this.coords.get(i).asPoint(origin, scale);
             Point point2 = this.coords.get(i + 1).asPoint(origin, scale);

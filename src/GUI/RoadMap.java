@@ -1,11 +1,13 @@
 package GUI;
 
 import Graph.*;
+import Trie.Trie;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.io.*;
 import java.util.Arrays;
+import java.util.List;
 
 public class RoadMap extends GUI {
     private static final File smallNodesPath = new File("Data/small/nodeID-lat-lon.tab");
@@ -15,13 +17,13 @@ public class RoadMap extends GUI {
     private static final File largeSegmentsPath = new File("Data/large/roadSeg-roadID-length-nodeID-nodeID-coords.tab");
     private static final File largeRoadsPath = new File("Data/large/roadID-roadInfo.tab");
     private static final File polygonsPath = new File("");
-    private static final double scaleStep = 1.1;
-    private Graph graph;
+    private static final double scaleStep = 1.5;
+    private Graph graph = new Graph();
+    private Trie trie = new Trie();
     private Location origin = new Location(0, 0);
     private double scale = 1.0;
 
     public RoadMap(boolean isTest) {
-        this.graph = new Graph();
         if (isTest) {
             onLoad(smallNodesPath, smallRoadsPath, smallSegmentsPath, polygonsPath);
         } else {
@@ -56,7 +58,13 @@ public class RoadMap extends GUI {
      */
     @Override
     protected void onSearch() {
-
+        String text = getSearchBox().getText();
+        List<Road> results = this.trie.get(text.toCharArray());
+        System.out.println(results.toString());
+//        highlight results on map
+        for (Road road : results) {
+            graph.getRoadOfId(road.getRoadId()).setHighlighted(true);
+        }
     }
 
     /**
@@ -165,6 +173,7 @@ public class RoadMap extends GUI {
             while((line = fileReader.readLine()) != null) {
                 Road road = new Road(line.split("\t"));
                 graph.addRoad(road);
+                this.trie.add(road.getLabel().toCharArray(), road);
             }
         } catch (IOException e) {
             e.printStackTrace();

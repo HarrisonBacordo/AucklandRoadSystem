@@ -22,12 +22,27 @@ public class Graph {
         roadList = new ArrayList<>();
     }
 
+    /**
+     *
+     * @param node
+     * @return
+     */
     public boolean addNode(Node node) {
         return this.nodeList.add(node);
     }
 
+    /**
+     *
+     * @param road
+     * @return
+     */
     public boolean addRoad(Road road) { return this.roadList.add(road); }
 
+    /**
+     *
+     * @param Id
+     * @return
+     */
     public Node getNodeOfId(int Id) {
         for (Node node : nodeList) {
             if (node.getId() == Id) {
@@ -37,6 +52,11 @@ public class Graph {
         return null;
     }
 
+    /**
+     *
+     * @param Id
+     * @return
+     */
     public Road getRoadOfId(int Id) {
         for (Road road : roadList) {
             if (road.getRoadId() == Id) {
@@ -46,6 +66,10 @@ public class Graph {
         return null;
     }
 
+    /**
+     *
+     * @param m
+     */
     public void move(GUI.Move m) {
         switch(m) {
             case NORTH:
@@ -63,6 +87,10 @@ public class Graph {
         }
     }
 
+    /**
+     *
+     * @param move
+     */
     private void moveX(int move) {
         for(Node node : this.nodeList) {
             node.setLocation(new Location(node.getLocation().x + move, node.getLocation().y));
@@ -72,6 +100,10 @@ public class Graph {
         }
     }
 
+    /**
+     *
+     * @param move
+     */
     private void moveY(int move) {
         for(Node node : this.nodeList) {
             node.setLocation(new Location(node.getLocation().x, node.getLocation().y + move));
@@ -80,7 +112,13 @@ public class Graph {
             road.applyYMove(move);
         }
     }
-    
+
+    /**
+     *
+     * @param g
+     * @param origin
+     * @param scale
+     */
     public void draw(Graphics g, Location origin, double scale){
         for (Node node : nodeList) {
             node.draw(g, origin, scale);
