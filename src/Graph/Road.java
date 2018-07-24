@@ -6,15 +6,15 @@ import java.util.List;
 
 public class Road {
     private int roadId;
-    private int type;
-    private String label;
-    private String city;
-    private boolean isOneWay;
-    private int speed;
-    private int roadClass;
-    private boolean isNotForCar;
-    private boolean isNotForPedestrians;
-    private boolean isNotForBicycles;
+    public int type;
+    public String label;
+    public String city;
+    public boolean isOneWay;
+    public int speed;
+    public int roadClass;
+    public boolean isNotForCar;
+    public boolean isNotForPedestrians;
+    public boolean isNotForBicycles;
     private boolean isHighlighted;
     private List<Edge> edgeList;
 
@@ -34,8 +34,6 @@ public class Road {
     }
 
     public int getRoadId() { return roadId; }
-
-    public String getLabel() { return this.label; }
 
     public boolean isHighlighted() {
         return this.isHighlighted;

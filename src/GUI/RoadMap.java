@@ -65,6 +65,7 @@ public class RoadMap extends GUI {
         List<Road> results = this.trie.getAll(text.toCharArray());
 //        highlight results on map
         this.graph.updateHighlighted(results);
+        appendTextOutputArea(results, null);
     }
 
     /**
@@ -173,11 +174,23 @@ public class RoadMap extends GUI {
             while((line = fileReader.readLine()) != null) {
                 Road road = new Road(line.split("\t"));
                 graph.addRoad(road);
-                this.trie.add(road.getLabel().toCharArray(), road);
+                this.trie.add(road.label.toCharArray(), road);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void appendTextOutputArea(List<Road> roads, Node node) {
+        for (Road road : roads) {
+            getTextOutputArea().append("Road name: " + road.label + "\n" +
+                    "City: " + road.city + "\n" +
+                    "One way: " + road.isOneWay + "\n" +
+                    "Cars prohibited: " + road.isNotForCar + "\n" +
+                    "Pedestrians prohibited: " + road.isNotForPedestrians + "\n" +
+                    "Bicycles prohibited: " + road.isNotForBicycles + "\n\n");
+        }
+
     }
 
     public static void main(String[] args) { new RoadMap(true); }

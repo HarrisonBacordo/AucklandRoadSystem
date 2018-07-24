@@ -1,34 +1,11 @@
 package GUI;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseWheelEvent;
-import java.io.File;
-
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
+import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.text.DefaultCaret;
+import java.awt.*;
+import java.awt.event.*;
+import java.io.File;
 
 /**
  * This is a template GUI.GUI that you can use for your mapping program. It is an
@@ -50,9 +27,9 @@ public abstract class GUI {
 	 */
 	public enum Move {
 		NORTH, SOUTH, EAST, WEST, ZOOM_IN, ZOOM_OUT
-	};
+    }
 
-	// these are the methods you need to implement.
+    // these are the methods you need to implement.
 
 	/**
 	 * Is called when the drawing area is redrawn and performs all the logic for
@@ -135,7 +112,7 @@ public abstract class GUI {
 	// assignment up to and including completion.
 	// --------------------------------------------------------------------
 
-	private static final boolean UPDATE_ON_EVERY_CHARACTER = false;
+    private static final boolean UPDATE_ON_EVERY_CHARACTER = true;
 
 	private static final int DEFAULT_DRAWING_HEIGHT = 400;
 	private static final int DEFAULT_DRAWING_WIDTH = 400;
