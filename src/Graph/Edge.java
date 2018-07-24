@@ -67,18 +67,24 @@ public class Edge {
      * @param highlight
      */
     public void draw(Graphics g, Location origin, double scale, boolean highlight) {
-        Color color = highlight ? Color.RED : Color.GREEN;
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setStroke(new BasicStroke(2));
+        Color color = highlight ? Color.RED : Color.BLACK;
         if (color == Color.RED) {
             System.out.println();
         }
-        g.setColor(color);
+        g2d.setColor(color);
         for (int i = 0; i < this.coords.size() - 1; i+=2) {
             Point point1 = this.coords.get(i).asPoint(origin, scale);
             Point point2 = this.coords.get(i + 1).asPoint(origin, scale);
-            g.drawLine(point1.x, point1.y, point2.x, point2.y);
+            g2d.drawLine(point1.x, point1.y, point2.x, point2.y);
         }
     }
 
+    /**
+     * @param coords
+     * @return
+     */
     private List<Location> convertCoordinates(String[] coords) {
         List<Location> newCoords = new ArrayList<>();
         for (int i = 0; i < coords.length - 1; i+=2) {

@@ -16,7 +16,6 @@ public class TrieNode {
     }
 
     /**
-     *
      * @param ch
      * @param node
      */
@@ -25,15 +24,20 @@ public class TrieNode {
     }
 
     /**
-     *
      * @param road
      */
-    public void addRoad(Road road) { this.roads.add(road); }
+    public void addRoad(Road road) {
+        this.roads.add(road);
+    }
 
 
-    public List<Road> getRoads() { return this.roads; }
+    public List<Road> getRoads() {
+        return this.roads;
+    }
 
-    public HashMap<Character, TrieNode> getChildren() { return this.children; }
+    public HashMap<Character, TrieNode> getChildren() {
+        return this.children;
+    }
 }
 
 

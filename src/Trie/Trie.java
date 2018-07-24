@@ -13,7 +13,6 @@ public class Trie {
     }
 
     /**
-     *
      * @param word
      * @param road
      */
@@ -30,7 +29,6 @@ public class Trie {
     }
 
     /**
-     *
      * @param word
      * @return
      */
@@ -47,7 +45,6 @@ public class Trie {
     }
 
     /**
-     *
      * @param prefix
      * @return
      */
@@ -60,12 +57,11 @@ public class Trie {
             }
             current = current.getChildren().get(c);
         }
-        getAllFrom(root, results);
+        getAllFrom(current, results);
         return results;
     }
 
     /**
-     *
      * @param node
      * @param results
      */

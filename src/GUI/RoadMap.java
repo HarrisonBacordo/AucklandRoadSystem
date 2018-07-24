@@ -5,7 +5,10 @@ import Trie.Trie;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -59,12 +62,9 @@ public class RoadMap extends GUI {
     @Override
     protected void onSearch() {
         String text = getSearchBox().getText();
-        List<Road> results = this.trie.get(text.toCharArray());
-        System.out.println(results.toString());
+        List<Road> results = this.trie.getAll(text.toCharArray());
 //        highlight results on map
-        for (Road road : results) {
-            graph.getRoadOfId(road.getRoadId()).setHighlighted(true);
-        }
+        this.graph.updateHighlighted(results);
     }
 
     /**

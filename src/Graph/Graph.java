@@ -23,7 +23,6 @@ public class Graph {
     }
 
     /**
-     *
      * @param node
      * @return
      */
@@ -32,14 +31,14 @@ public class Graph {
     }
 
     /**
-     *
      * @param road
      * @return
      */
-    public boolean addRoad(Road road) { return this.roadList.add(road); }
+    public boolean addRoad(Road road) {
+        return this.roadList.add(road);
+    }
 
     /**
-     *
      * @param Id
      * @return
      */
@@ -53,7 +52,6 @@ public class Graph {
     }
 
     /**
-     *
      * @param Id
      * @return
      */
@@ -67,11 +65,10 @@ public class Graph {
     }
 
     /**
-     *
      * @param m
      */
     public void move(GUI.Move m) {
-        switch(m) {
+        switch (m) {
             case NORTH:
                 this.moveY(MOVE_NORTH_VALUE);
                 break;
@@ -88,38 +85,48 @@ public class Graph {
     }
 
     /**
-     *
      * @param move
      */
     private void moveX(int move) {
-        for(Node node : this.nodeList) {
+        for (Node node : this.nodeList) {
             node.setLocation(new Location(node.getLocation().x + move, node.getLocation().y));
         }
-        for(Road road : this.roadList) {
+        for (Road road : this.roadList) {
             road.applyXMove(move);
         }
     }
 
     /**
-     *
      * @param move
      */
     private void moveY(int move) {
-        for(Node node : this.nodeList) {
+        for (Node node : this.nodeList) {
             node.setLocation(new Location(node.getLocation().x, node.getLocation().y + move));
         }
-        for(Road road : this.roadList) {
+        for (Road road : this.roadList) {
             road.applyYMove(move);
         }
     }
 
     /**
-     *
+     * @param roads
+     */
+    public void updateHighlighted(List<Road> roads) {
+        for (Road road : this.roadList) {
+            if (road.isHighlighted() && !roads.contains(road)) {
+                road.setHighlighted(false);
+            } else if (roads.contains(road)) {
+                road.setHighlighted(true);
+            }
+        }
+    }
+
+    /**
      * @param g
      * @param origin
      * @param scale
      */
-    public void draw(Graphics g, Location origin, double scale){
+    public void draw(Graphics g, Location origin, double scale) {
         for (Node node : nodeList) {
             node.draw(g, origin, scale);
         }

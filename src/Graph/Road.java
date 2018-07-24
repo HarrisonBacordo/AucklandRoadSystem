@@ -37,6 +37,10 @@ public class Road {
 
     public String getLabel() { return this.label; }
 
+    public boolean isHighlighted() {
+        return this.isHighlighted;
+    }
+
     public void setHighlighted(boolean isHighlighted) { this.isHighlighted = isHighlighted; }
 
     /**
