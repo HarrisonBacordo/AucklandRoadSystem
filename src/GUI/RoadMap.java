@@ -15,13 +15,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public class RoadMap extends GUI {
-    private static final File smallNodesPath = new File("Data/small/nodeID-lat-lon.tab");
-    private static final File smallSegmentsPath = new File("Data/small/roadSeg-roadID-length-nodeID-nodeID-coords.tab");
-    private static final File smallRoadsPath = new File("Data/small/roadID-roadInfo.tab");
-    private static final File largeNodesPath = new File("Data/large/nodeID-lat-lon.tab");
-    private static final File largeSegmentsPath = new File("Data/large/roadSeg-roadID-length-nodeID-nodeID-coords.tab");
-    private static final File largeRoadsPath = new File("Data/large/roadID-roadInfo.tab");
-    private static final File polygonsPath = new File("");
     private static final int MOVE_EAST_VALUE = 100;
     private static final int MOVE_WEST_VALUE = -100;
     private static final int MOVE_NORTH_VALUE = 100;
@@ -31,14 +24,6 @@ public class RoadMap extends GUI {
     private double scale = 1.0;
     private Graph graph = new Graph();
     private Trie trie = new Trie();
-
-    public RoadMap(boolean isTest) {
-        if (isTest) {
-            onLoad(smallNodesPath, smallRoadsPath, smallSegmentsPath, polygonsPath);
-        } else {
-            onLoad(largeNodesPath, largeRoadsPath, largeSegmentsPath, polygonsPath);
-        }
-    }
 
     /**
      * Is called when the drawing area is redrawn and performs all the logic for
@@ -227,5 +212,7 @@ public class RoadMap extends GUI {
 
     }
 
-    public static void main(String[] args) { new RoadMap(true); }
+    public static void main(String[] args) {
+        new RoadMap();
+    }
 }
