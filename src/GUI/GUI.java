@@ -43,6 +43,8 @@ public abstract class GUI {
 	 */
 	protected abstract void onClick(MouseEvent e);
 
+	protected abstract void onScroll(MouseWheelEvent e);
+
 	/**
 	 * Is called whenever the search box is updated. Use getSearchBox to get the
 	 * JTextField object that is the search box itself.

@@ -19,17 +19,17 @@ public class Node {
 
     public int getId() { return this.id; }
 
-    public Location getLocation() { return this.location; }
-
-    public void setLocation(Location location) { this.location = location; }
-
     public List<Edge> getOutgoingList() { return this.outgoingList; }
 
     public List<Edge> getIncomingList() { return this.incomingList; }
 
-    public boolean addToOutgoingList(Edge edge) { return this.outgoingList.add(edge); }
+    public void addToOutgoingList(Edge edge) {
+        this.outgoingList.add(edge);
+    }
 
-    public boolean addToIncomingList(Edge edge) { return this.incomingList.add(edge); }
+    public void addToIncomingList(Edge edge) {
+        this.incomingList.add(edge);
+    }
 
     public void draw(Graphics g, Location origin, double scale) {
         Point p = this.location.asPoint(origin, scale);

@@ -1,9 +1,8 @@
 package GUI;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -63,6 +62,11 @@ public class SquaresExample extends GUI {
 
 		getTextOutputArea().append("\nsquares remaining: " + squares.size());
 	}
+
+    @Override
+    protected void onScroll(MouseWheelEvent e) {
+
+    }
 
 	@Override
 	protected void onSearch() {

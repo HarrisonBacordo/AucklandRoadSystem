@@ -50,35 +50,12 @@ public class Road {
 
     /**
      *
-     * @param move
-     */
-    public void applyXMove(int move) {
-        for(Edge edge : this.edgeList) {
-            edge.applyXMove(move);
-        }
-    }
-
-    /**
-     *
-     * @param move
-     */
-    public void applyYMove(int move) {
-        for(Edge edge : this.edgeList) {
-            edge.applyYMove(move);
-        }
-    }
-
-    /**
-     *
      * @param g
      * @param origin
      * @param scale
      */
     public void draw(Graphics g, Location origin, double scale) {
         for (Edge edge : edgeList) {
-            if(roadId == 17198) {
-                System.out.println();
-            }
             edge.draw(g, origin, scale, isHighlighted);
         }
     }

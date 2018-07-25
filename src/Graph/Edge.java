@@ -37,30 +37,6 @@ public class Edge {
 
     /**
      *
-     * @param move
-     */
-    public void applyXMove(int move) {
-        List<Location> temp = new ArrayList<>();
-        for(Location loc : coords) {
-            temp.add(new Location(loc.x + move, loc.y));
-        }
-        this.coords = temp;
-    }
-
-    /**
-     *
-     * @param move
-     */
-    public void applyYMove(int move) {
-        List<Location> temp = new ArrayList<>();
-        for(Location loc : coords) {
-            temp.add(new Location(loc.x, loc.y + move));
-        }
-        this.coords = temp;
-    }
-
-    /**
-     *
      * @param g
      * @param origin
      * @param scale
@@ -70,9 +46,6 @@ public class Edge {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setStroke(new BasicStroke(2));
         Color color = highlight ? Color.RED : Color.BLACK;
-        if (color == Color.RED) {
-            System.out.println();
-        }
         g2d.setColor(color);
         for (int i = 0; i < this.coords.size() - 1; i+=2) {
             Point point1 = this.coords.get(i).asPoint(origin, scale);

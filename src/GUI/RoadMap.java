@@ -5,10 +5,12 @@ import Trie.Trie;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -20,11 +22,15 @@ public class RoadMap extends GUI {
     private static final File largeSegmentsPath = new File("Data/large/roadSeg-roadID-length-nodeID-nodeID-coords.tab");
     private static final File largeRoadsPath = new File("Data/large/roadID-roadInfo.tab");
     private static final File polygonsPath = new File("");
-    private static final double scaleStep = 1.5;
-    private Graph graph = new Graph();
-    private Trie trie = new Trie();
+    private static final int MOVE_EAST_VALUE = 100;
+    private static final int MOVE_WEST_VALUE = -100;
+    private static final int MOVE_NORTH_VALUE = 100;
+    private static final int MOVE_SOUTH_VALUE = -100;
+    private static final double SCALE_STEP = 1.5;
     private Location origin = new Location(0, 0);
     private double scale = 1.0;
+    private Graph graph = new Graph();
+    private Trie trie = new Trie();
 
     public RoadMap(boolean isTest) {
         if (isTest) {
@@ -55,6 +61,16 @@ public class RoadMap extends GUI {
     protected void onClick(MouseEvent e) {
     }
 
+    @Override
+    protected void onScroll(MouseWheelEvent e) {
+        int notches = e.getWheelRotation();
+        if (notches < 0) {
+            onMove(Move.ZOOM_IN);
+        } else {
+            onMove(Move.ZOOM_OUT);
+        }
+    }
+
     /**
      * Is called whenever the search box is updated. Use getSearchBox to get the
      * JTextField object that is the search box itself.
@@ -65,7 +81,6 @@ public class RoadMap extends GUI {
         List<Road> results = this.trie.getAll(text.toCharArray());
 //        highlight results on map
         this.graph.updateHighlighted(results);
-        appendTextOutputArea(results, null);
     }
 
     /**
@@ -77,14 +92,24 @@ public class RoadMap extends GUI {
     @Override
     protected void onMove(Move m) {
         switch (m) {
+            case NORTH:
+                this.origin = origin.moveBy(0, MOVE_NORTH_VALUE / this.scale);
+                break;
+            case SOUTH:
+                this.origin = origin.moveBy(0, MOVE_SOUTH_VALUE / this.scale);
+                break;
+            case EAST:
+                this.origin = origin.moveBy(MOVE_EAST_VALUE / this.scale, 0);
+                break;
+            case WEST:
+                this.origin = origin.moveBy(MOVE_WEST_VALUE / this.scale, 0);
+                break;
             case ZOOM_IN:
-                this.scale *= scaleStep;
+                this.scale *= SCALE_STEP;
                 break;
             case ZOOM_OUT:
-                this.scale /= scaleStep;
+                this.scale /= SCALE_STEP;
                 break;
-            default:
-                graph.move(m);
         }
     }
 
@@ -104,7 +129,6 @@ public class RoadMap extends GUI {
         loadNodes(nodes, graph);
         loadRoads(roads, graph);
         loadEdges(segments, graph);
-        System.out.println();
     }
 
     /**
@@ -181,7 +205,17 @@ public class RoadMap extends GUI {
         }
     }
 
-    private void appendTextOutputArea(List<Road> roads, Node node) {
+    /**
+     * @param node
+     */
+    private void appendTextOutputArea(Node node) {
+        List<Road> roads = new ArrayList<>();
+        for (Edge edge : node.getIncomingList()) {
+            roads.add(graph.getRoadOfId(edge.getroadId()));
+        }
+        for (Edge edge : node.getOutgoingList()) {
+            roads.add(graph.getRoadOfId(edge.getroadId()));
+        }
         for (Road road : roads) {
             getTextOutputArea().append("Road name: " + road.label + "\n" +
                     "City: " + road.city + "\n" +
