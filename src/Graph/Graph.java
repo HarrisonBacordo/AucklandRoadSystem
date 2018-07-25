@@ -1,5 +1,9 @@
 package Graph;
 
+import GUI.RoadMap;
+import QuadTree.QuadTree;
+import QuadTree.Boundary;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,11 +11,13 @@ import java.util.List;
 public class Graph {
 
     private List<Node> nodeList;
+    private QuadTree quadTree;
     private List<Road> roadList;
 
     public Graph() {
-        nodeList = new ArrayList<>();
-        roadList = new ArrayList<>();
+        this.nodeList = new ArrayList<>();
+        this.roadList = new ArrayList<>();
+        resetQuadTree();
     }
 
     /**
@@ -67,17 +73,53 @@ public class Graph {
         }
     }
 
+    public void resetHighlighted() {
+        for (Road road : this.roadList) {
+            road.setHighlighted(false);
+        }
+        for (Node node : this.nodeList) {
+            node.setHighlighted(false);
+        }
+    }
+
     /**
      * @param g
      * @param origin
      * @param scale
      */
     public void draw(Graphics g, Location origin, double scale) {
+        this.resetQuadTree();
         for (Node node : nodeList) {
+            this.quadTree.insert(node, origin, scale);
             node.draw(g, origin, scale);
         }
         for (Road road : roadList) {
             road.draw(g, origin, scale);
+        }
+    }
+
+    private void resetQuadTree() {
+        this.quadTree = new QuadTree(new Boundary(RoadMap.canvasWidth/2,
+                RoadMap.canvasHeight/2,
+                RoadMap.canvasWidth/2,
+                RoadMap.canvasHeight/2), 1);
+    }
+
+    public Node getNearestNode(Point point) {
+        List<Node> nodes= this.quadTree.getNearestNode(point);
+        for (Node node : nodes){
+            highlight(node);
+        }
+        return nodes.get(0);
+    }
+
+    public void highlight(Node node) {
+        node.setHighlighted(true);
+        for(Edge edge : node.getIncomingList()) {
+            this.getRoadOfId(edge.getroadId()).setHighlighted(true);
+        }
+        for(Edge edge : node.getOutgoingList()) {
+            this.getRoadOfId(edge.getroadId()).setHighlighted(true);
         }
     }
 }

@@ -20,6 +20,8 @@ public class RoadMap extends GUI {
     private static final int MOVE_NORTH_VALUE = 100;
     private static final int MOVE_SOUTH_VALUE = -100;
     private static final double SCALE_STEP = 1.5;
+    public static int canvasWidth;
+    public static int canvasHeight;
     private Location origin = new Location(0, 0);
     private double scale = 1.0;
     private Graph graph = new Graph();
@@ -33,7 +35,10 @@ public class RoadMap extends GUI {
      */
     @Override
     protected void redraw(Graphics g) {
+        this.canvasWidth = this.getDrawingAreaDimension().width;
+        this.canvasHeight = this.getDrawingAreaDimension().height;
         graph.draw(g, origin, scale);
+        System.out.println();
     }
 
     /**
@@ -44,6 +49,9 @@ public class RoadMap extends GUI {
      */
     @Override
     protected void onClick(MouseEvent e) {
+        this.graph.resetHighlighted();
+        Point point = new Point(e.getX(), e.getY());
+        this.appendTextOutputArea(graph.getNearestNode(point));
     }
 
     @Override
