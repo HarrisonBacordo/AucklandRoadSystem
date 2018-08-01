@@ -4,6 +4,9 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents a road on the map, which is made up of one or more segments.
+ */
 public class Road {
     private int roadId;
     public int type;
@@ -23,7 +26,7 @@ public class Road {
         this.type = Integer.parseInt(args[1]);
         this.label = args[2];
         this.city = args[3];
-        this.isOneWay =  Boolean.parseBoolean(args[4]);
+        this.isOneWay = Boolean.parseBoolean(args[4]);
         this.speed = Integer.parseInt(args[5]);
         this.roadClass = Integer.parseInt(args[6]);
         this.isNotForCar = Boolean.parseBoolean(args[7]);
@@ -33,28 +36,38 @@ public class Road {
         this.edgeList = new ArrayList<>();
     }
 
-    public int getRoadId() { return roadId; }
+    public int getRoadId() {
+        return roadId;
+    }
+
+    public List<Edge> getEdgeList() {
+        return this.edgeList;
+    }
 
     public boolean isHighlighted() {
         return this.isHighlighted;
     }
 
-    public void setHighlighted(boolean isHighlighted) { this.isHighlighted = isHighlighted; }
+    public void setHighlighted(boolean isHighlighted) {
+        this.isHighlighted = isHighlighted;
+    }
 
     /**
+     * adds an edge to this road
      *
-     * @param edge
+     * @param edge - edge to add
      * @return
      */
-    public boolean addEdge(Edge edge) { return this.edgeList.add(edge); }
-
-    public List<Edge> getEdgeList() { return this.edgeList; }
+    public boolean addEdge(Edge edge) {
+        return this.edgeList.add(edge);
+    }
 
     /**
+     * Draws this road onto the map
      *
-     * @param g
-     * @param origin
-     * @param scale
+     * @param g      - graphics object
+     * @param origin - current origin of the map
+     * @param scale  - current scale of the map
      */
     public void draw(Graphics g, Location origin, double scale) {
         for (Edge edge : edgeList) {

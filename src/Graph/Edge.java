@@ -1,9 +1,11 @@
 package Graph;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents a portion of a road between two nodes.
+ */
 public class Edge {
     private int roadId;
     private double length;
@@ -17,7 +19,6 @@ public class Edge {
         this.from = from;
         this.to = to;
         this.coords = coords;
-//        this.coords = convertCoordinates(coords);
     }
 
     public int getroadId() {
@@ -37,42 +38,24 @@ public class Edge {
     }
 
     /**
+     * Draws the edge onto the map
      *
-     * @param g
-     * @param origin
-     * @param scale
-     * @param highlight
+     * @param g         - graphics object
+     * @param origin    - current origin of the map
+     * @param scale     - current scale of the map
+     * @param highlight - whether to highlight this edge or not
      */
     public void draw(Graphics g, Location origin, double scale, boolean highlight) {
         Graphics2D g2d = (Graphics2D) g;
-        g2d.setStroke(new BasicStroke(2));
+        g2d.setStroke(new BasicStroke(1));
         Color color = highlight ? Color.RED : Color.BLACK;
         g2d.setColor(color);
-//        for (int i = 0; i < this.coords.size() - 1; i++) {
-//            Point point1 = this.coords.get(i).asPoint(origin, scale);
-//            Point point2 = this.coords.get(i + 1).asPoint(origin, scale);
-//            g2d.drawLine(point1.x, point1.y, point2.x, point2.y);
-//        }
-//
+//        convert all coordinates to points, and draw the line between the points
         Point p1 = Location.newFromLatLon(this.coords.get(0), this.coords.get(1)).asPoint(origin, scale);
         for (int i = 2; i < coords.size(); i = i + 2) {
-            Point p2 = Location.newFromLatLon(this.coords.get(i), this.coords.get(i+1)).asPoint(origin, scale);
+            Point p2 = Location.newFromLatLon(this.coords.get(i), this.coords.get(i + 1)).asPoint(origin, scale);
             g2d.drawLine(p1.x, p1.y, p2.x, p2.y);
             p1 = p2;
         }
-    }
-
-    /**
-     * @param coords
-     * @return
-     */
-    private List<Location> convertCoordinates(String[] coords) {
-        List<Location> newCoords = new ArrayList<>();
-        for (int i = 0; i < coords.length - 1; i+= 2) {
-            double lat = Double.parseDouble(coords[i]);
-            double lon = Double.parseDouble(coords[i+1]);
-            newCoords.add(Location.newFromLatLon(lat, lon));
-        }
-        return newCoords;
     }
 }

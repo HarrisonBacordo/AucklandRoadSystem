@@ -11,9 +11,11 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Represents the overall mapping program, handles all queries by delegating it to lower-level components
+ */
 public class RoadMap extends GUI {
     private static final int MOVE_EAST_VALUE = 100;
     private static final int MOVE_WEST_VALUE = -100;
@@ -38,8 +40,6 @@ public class RoadMap extends GUI {
         this.canvasWidth = this.getDrawingAreaDimension().width;
         this.canvasHeight = this.getDrawingAreaDimension().height;
         graph.draw(g, origin, scale);
-        System.out.println(this.origin.x + " " + this.origin.y);
-        System.out.println(this.scale);
     }
 
     /**
@@ -120,6 +120,7 @@ public class RoadMap extends GUI {
      */
     @Override
     protected void onLoad(File nodes, File roads, File segments, File polygons) {
+//        ORDER MATTERS HERE
         loadNodes(nodes, graph);
         loadRoads(roads, graph);
         loadEdges(segments, graph);
@@ -127,6 +128,7 @@ public class RoadMap extends GUI {
 
     /**
      * Parses node file and saves it in the graph as a node object
+     *
      * @param nodes - the nodes file
      * @param graph - the graph to store the nodes in
      */
@@ -134,7 +136,7 @@ public class RoadMap extends GUI {
         try {
             BufferedReader fileReader = new BufferedReader(new FileReader(nodes));
             String line;
-            while((line = fileReader.readLine()) != null) {
+            while ((line = fileReader.readLine()) != null) {
                 String[] lineValues = line.split("\t");
                 Node node = new Node(
                         Integer.parseInt(lineValues[0]),
@@ -150,6 +152,7 @@ public class RoadMap extends GUI {
 
     /**
      * Parses segment file and saves it in the graph as an edge object
+     *
      * @param edges - the segments file
      * @param graph - the graph to store the segments in
      */
@@ -158,11 +161,12 @@ public class RoadMap extends GUI {
             BufferedReader fileReader = new BufferedReader(new FileReader(edges));
             String line;
             fileReader.readLine();
-            while((line = fileReader.readLine()) != null) {
+            while ((line = fileReader.readLine()) != null) {
                 String[] lineValues = line.split("\t");
                 int roadId = Integer.parseInt(lineValues[0]);
                 int toId = Integer.parseInt(lineValues[2]);
                 int fromId = Integer.parseInt(lineValues[3]);
+//                Convert coordinates to doubles
                 List<Double> coords = new ArrayList<>();
                 for (int i = 4; i < lineValues.length; i++) {
                     coords.add(Double.parseDouble(lineValues[i]));
@@ -185,6 +189,7 @@ public class RoadMap extends GUI {
 
     /**
      * Parses roads file and saves it in the graph as a road object
+     *
      * @param roads - the roads file
      * @param graph - the graph to store the roads in
      */
@@ -193,7 +198,7 @@ public class RoadMap extends GUI {
             BufferedReader fileReader = new BufferedReader(new FileReader(roads));
             String line;
             fileReader.readLine();
-            while((line = fileReader.readLine()) != null) {
+            while ((line = fileReader.readLine()) != null) {
                 Road road = new Road(line.split("\t"));
                 graph.addRoad(road);
                 this.trie.add(road.label.toCharArray(), road);
@@ -204,7 +209,9 @@ public class RoadMap extends GUI {
     }
 
     /**
-     * @param node
+     * Appends information about the given node to the text area
+     *
+     * @param node - node to print information about
      */
     private void appendTextOutputArea(Node node) {
         List<Road> roads = new ArrayList<>();
