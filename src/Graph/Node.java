@@ -49,7 +49,7 @@ public class Node {
         Color color = isHighlighted ? Color.CYAN : Color.BLUE;
         g2d.setColor(color);
         Point p = this.location.asPoint(origin, scale);
-        g.fillOval(p.x, p.y, 5, 5);
+        g.fillOval(p.x, p.y, 10, 10);
     }
 
 }

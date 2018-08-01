@@ -48,6 +48,8 @@ public class Road {
      */
     public boolean addEdge(Edge edge) { return this.edgeList.add(edge); }
 
+    public List<Edge> getEdgeList() { return this.edgeList; }
+
     /**
      *
      * @param g

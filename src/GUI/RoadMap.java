@@ -22,8 +22,8 @@ public class RoadMap extends GUI {
     private static final double SCALE_STEP = 1.5;
     public static int canvasWidth;
     public static int canvasHeight;
-    private Location origin = new Location(0, 0);
-    private double scale = 1.0;
+    private Location origin = new Location(-193.5, 163.9);
+    private double scale = 6.58;
     private Graph graph = new Graph();
     private Trie trie = new Trie();
 
@@ -38,7 +38,8 @@ public class RoadMap extends GUI {
         this.canvasWidth = this.getDrawingAreaDimension().width;
         this.canvasHeight = this.getDrawingAreaDimension().height;
         graph.draw(g, origin, scale);
-        System.out.println();
+        System.out.println(this.origin.x + " " + this.origin.y);
+        System.out.println(this.scale);
     }
 
     /**
@@ -162,16 +163,20 @@ public class RoadMap extends GUI {
                 int roadId = Integer.parseInt(lineValues[0]);
                 int toId = Integer.parseInt(lineValues[2]);
                 int fromId = Integer.parseInt(lineValues[3]);
+                List<Double> coords = new ArrayList<>();
+                for (int i = 4; i < lineValues.length; i++) {
+                    coords.add(Double.parseDouble(lineValues[i]));
+                }
                 Edge edge = new Edge(
                         Integer.parseInt(lineValues[0]),
                         Double.parseDouble(lineValues[1]),
-                        graph.getNodeOfId(toId),
-                        graph.getNodeOfId(fromId),
-                        Arrays.copyOfRange(lineValues, 4, lineValues.length-1)
+                        this.graph.getNodeOfId(toId),
+                        this.graph.getNodeOfId(fromId),
+                        coords
                 );
-                graph.getRoadOfId(roadId).addEdge(edge);
-                graph.getNodeOfId(toId).addToIncomingList(edge);
-                graph.getNodeOfId(fromId).addToOutgoingList(edge);
+                this.graph.getRoadOfId(roadId).addEdge(edge);
+                this.graph.getNodeOfId(toId).addToIncomingList(edge);
+                this.graph.getNodeOfId(fromId).addToOutgoingList(edge);
             }
         } catch (IOException e) {
             e.printStackTrace();
