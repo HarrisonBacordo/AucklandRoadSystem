@@ -23,6 +23,10 @@ public class Graph {
         resetQuadTree();
     }
 
+    public List<Node> getNodeList() {
+        return this.nodeList;
+    }
+
     /**
      * Adds node to the graph
      *
@@ -138,6 +142,7 @@ public class Graph {
         for (Node node : nodes) {
             highlight(node);
         }
+        if(nodes.isEmpty()) { return null; }
         return nodes.get(0);
     }
 

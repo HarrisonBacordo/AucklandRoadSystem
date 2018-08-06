@@ -1,0 +1,17 @@
+What this code does:
+All of minimal
+All of core
+All of completion
+QuadTree in challenge
+One feature implemented in challenge (scroll wheel to zoom)
+Doesn't implement the polygons data file
+
+Data structures that are used:
+Trie - for search-box
+Graph - for storing the nodes and edges
+QuadTree - for efficiently querying the nodes upon click
+
+I have tested my program by running the program over multiple iterations and ensuring that each feature works.
+The QuadTree doesn't work as well as expected, and that may have to do with the fact that the capacity is 1. I
+have not implemented any code that can legitimately support a capacity higher than that, since it simply grabs
+the first node in the list the QuadTree returns when queried.

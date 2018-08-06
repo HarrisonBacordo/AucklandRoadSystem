@@ -214,6 +214,7 @@ public class RoadMap extends GUI {
      * @param node - node to print information about
      */
     private void appendTextOutputArea(Node node) {
+        if (node == null) { return; }
         List<Road> roads = new ArrayList<>();
         for (Edge edge : node.getIncomingList()) {
             roads.add(graph.getRoadOfId(edge.getroadId()));
