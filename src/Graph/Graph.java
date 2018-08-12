@@ -146,6 +146,10 @@ public class Graph {
         return nodes.get(0);
     }
 
+    public List<Node> getAdjacentNodes(Node node) {
+        return node.getAdjacentNodes();
+    }
+
     /**
      * Highlights the selected node, along with the edges connected to the node
      *

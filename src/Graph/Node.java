@@ -68,6 +68,14 @@ public class Node {
         this.incomingList.add(edge);
     }
 
+    public List<Node> getAdjacentNodes() {
+        List<Node> adjacentNodes = new ArrayList<>();
+        for (Edge edge : this.outgoingList) {
+            adjacentNodes.add(edge.getTo());
+        }
+        return adjacentNodes;
+    }
+
     /**
      * Draws the node onto the GUI
      *
