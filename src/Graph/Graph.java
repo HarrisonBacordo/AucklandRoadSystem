@@ -6,26 +6,35 @@ import QuadTree.QuadTree;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Represents a graph of the given map.
  */
 public class Graph {
 
-    private List<Node> nodeList;
+    private Map<Integer, Node> nodeList;
     private QuadTree quadTree;
-    private List<Road> roadList;
+    private Map<Integer, Road> roadList;
+    private boolean populated;
 
     public Graph() {
-        this.nodeList = new ArrayList<>();
-        this.roadList = new ArrayList<>();
+        this.nodeList = new HashMap<>();
+        this.roadList = new HashMap<>();
+        this.populated = false;
         resetQuadTree();
     }
 
-    public List<Node> getNodeList() {
+    public Map<Integer, Node> getNodeList() {
         return this.nodeList;
     }
+
+    public boolean isPopulated() { return this.populated; }
+
+    public void setPopulated(boolean populated) { this.populated = populated; }
+
 
     /**
      * Adds node to the graph
@@ -33,7 +42,7 @@ public class Graph {
      * @param node - node to add
      */
     public void addNode(Node node) {
-        this.nodeList.add(node);
+        this.nodeList.put(node.getId(), node);
     }
 
     /**
@@ -42,7 +51,7 @@ public class Graph {
      * @param road - road to add
      */
     public void addRoad(Road road) {
-        this.roadList.add(road);
+        this.roadList.put(road.getRoadId(), road);
     }
 
     /**
@@ -52,12 +61,7 @@ public class Graph {
      * @return - the node that matches this id
      */
     public Node getNodeOfId(int Id) {
-        for (Node node : nodeList) {
-            if (node.getId() == Id) {
-                return node;
-            }
-        }
-        return null;
+        return this.nodeList.get(Id);
     }
 
     /**
@@ -67,12 +71,7 @@ public class Graph {
      * @return - the road that matches this id
      */
     public Road getRoadOfId(int Id) {
-        for (Road road : roadList) {
-            if (road.getRoadId() == Id) {
-                return road;
-            }
-        }
-        return null;
+        return this.roadList.get(Id);
     }
 
     /**
@@ -82,7 +81,7 @@ public class Graph {
      * @param roads - roads to highlight
      */
     public void updateHighlighted(List<Road> roads) {
-        for (Road road : this.roadList) {
+        for (Road road : this.roadList.values()) {
             if (road.isHighlighted() && !roads.contains(road)) {
                 road.setHighlighted(false);
             } else if (roads.contains(road)) {
@@ -95,10 +94,10 @@ public class Graph {
      * Sets all nodes and roads to not highlight
      */
     public void resetHighlighted() {
-        for (Road road : this.roadList) {
+        for (Road road : this.roadList.values()) {
             road.setHighlighted(false);
         }
-        for (Node node : this.nodeList) {
+        for (Node node : this.nodeList.values()) {
             node.setHighlighted(false);
         }
     }
@@ -112,11 +111,11 @@ public class Graph {
      */
     public void draw(Graphics g, Location origin, double scale) {
         this.resetQuadTree();
-        for (Node node : nodeList) {
+        for (Node node : nodeList.values()) {
             this.quadTree.insert(node, origin, scale);
             node.draw(g, origin, scale);
         }
-        for (Road road : roadList) {
+        for (Road road : roadList.values()) {
             road.draw(g, origin, scale);
         }
     }

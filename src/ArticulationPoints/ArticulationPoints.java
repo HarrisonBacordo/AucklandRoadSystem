@@ -20,12 +20,11 @@ public class ArticulationPoints {
      */
     public List<Node> findArticulationPoints() {
         Random random = new Random();
-        int rootIdx = random.nextInt(this.graph.getNodeList().size());
-        Node root = this.graph.getNodeList().get(rootIdx);
+        Object[] values = this.graph.getNodeList().values().toArray();
+        Node root = (Node) values[random.nextInt(values.length)];
         this.counts.put(root, 0);
         int numSubTrees = 0;
-        for (Node neighbour :
-                root.getAdjacentNodes()) {
+        for (Node neighbour : root.getAdjacentNodes()) {
             if (!this.counts.containsKey(neighbour)) {
                 recArtPts(neighbour, 1, root);
                 numSubTrees++;

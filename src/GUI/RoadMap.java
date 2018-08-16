@@ -1,5 +1,7 @@
 package GUI;
 
+import AStar.AStar;
+import ArticulationPoints.ArticulationPoints;
 import Graph.*;
 import Trie.Trie;
 
@@ -28,6 +30,8 @@ public class RoadMap extends GUI {
     private double scale = 6.58;
     private Graph graph = new Graph();
     private Trie trie = new Trie();
+    private AStar aStar;
+    private ArticulationPoints artPts;
 
     /**
      * Is called when the drawing area is redrawn and performs all the logic for
@@ -39,7 +43,13 @@ public class RoadMap extends GUI {
     protected void redraw(Graphics g) {
         this.canvasWidth = this.getDrawingAreaDimension().width;
         this.canvasHeight = this.getDrawingAreaDimension().height;
-        graph.draw(g, origin, scale);
+        if(this.graph.isPopulated()) {
+            List<Node> articPts = this.artPts.findArticulationPoints();
+            for (Node node : articPts) {
+                this.graph.highlight(node);
+            }
+            graph.draw(g, origin, scale);
+        }
     }
 
     /**
@@ -124,6 +134,9 @@ public class RoadMap extends GUI {
         loadNodes(nodes, graph);
         loadRoads(roads, graph);
         loadEdges(segments, graph);
+        this.graph.setPopulated(true);
+        this.aStar = new AStar(this.graph);
+        this.artPts = new ArticulationPoints(this.graph);
     }
 
     /**
@@ -164,8 +177,8 @@ public class RoadMap extends GUI {
             while ((line = fileReader.readLine()) != null) {
                 String[] lineValues = line.split("\t");
                 int roadId = Integer.parseInt(lineValues[0]);
-                int toId = Integer.parseInt(lineValues[2]);
-                int fromId = Integer.parseInt(lineValues[3]);
+                int fromId = Integer.parseInt(lineValues[2]);
+                int toId = Integer.parseInt(lineValues[3]);
 //                Convert coordinates to doubles
                 List<Double> coords = new ArrayList<>();
                 for (int i = 4; i < lineValues.length; i++) {
@@ -174,8 +187,8 @@ public class RoadMap extends GUI {
                 Edge edge = new Edge(
                         Integer.parseInt(lineValues[0]),
                         Double.parseDouble(lineValues[1]),
-                        this.graph.getNodeOfId(toId),
                         this.graph.getNodeOfId(fromId),
+                        this.graph.getNodeOfId(toId),
                         coords
                 );
                 this.graph.getRoadOfId(roadId).addEdge(edge);
