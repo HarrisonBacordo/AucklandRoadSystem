@@ -19,20 +19,26 @@ public class ArticulationPoints {
      * @return
      */
     public List<Node> findArticulationPoints() {
-        Random random = new Random();
-        Object[] values = this.graph.getNodeList().values().toArray();
-        Node root = (Node) values[random.nextInt(values.length)];
-        this.counts.put(root, 0);
-        int numSubTrees = 0;
-        for (Node neighbour : root.getAdjacentNodes()) {
-            if (!this.counts.containsKey(neighbour)) {
-                recArtPts(neighbour, 1, root);
-                numSubTrees++;
+        this.resetVisited();
+        this.foundArtPoints = new ArrayList<>();
+
+        Node root = getNextUnvisited();
+        while (root != null) {
+            this.counts.put(root, 0);
+            int numSubTrees = 0;
+            for (Node neighbour : root.getAdjacentNodes()) {
+                if (!this.counts.containsKey(neighbour)) {
+                    recArtPts(neighbour, 1, root);
+                    numSubTrees++;
+                }
             }
             if (numSubTrees > 1) {
                 this.foundArtPoints.add(root);
             }
+            root.setVisited(true);
+            root = getNextUnvisited();
         }
+
         return this.foundArtPoints;
     }
 
@@ -47,6 +53,8 @@ public class ArticulationPoints {
         this.counts.put(node, count);
         int reachBack = count;
         for (Node neighbour : node.getAdjacentNodes()) {
+            neighbour.setVisited(true);
+
             if (neighbour == parent) {
                 continue;
             }
@@ -61,5 +69,22 @@ public class ArticulationPoints {
             }
         }
         return reachBack;
+    }
+
+    private void resetVisited() {
+        for (Map.Entry<Integer, Node> nodeEntry : graph.getNodes().entrySet()){
+            Node node = nodeEntry.getValue();
+            node.setVisited(false);
+        }
+    }
+
+    private Node getNextUnvisited() {
+        for (Map.Entry<Integer, Node> nodeEntry : graph.getNodes().entrySet()){
+            Node node = nodeEntry.getValue();
+            if (!node.isVisited()) {
+                return node;
+            }
+        }
+        return null;
     }
 }

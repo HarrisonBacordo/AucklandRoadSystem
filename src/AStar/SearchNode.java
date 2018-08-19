@@ -7,12 +7,14 @@ public class SearchNode {
     private Node prev;
     private double subCost;
     private double cost;
+    private boolean visited;
 
     public SearchNode(Node node, Node prev, double subCost, double cost) {
         this.node = node;
         this.prev = prev;
         this.subCost = subCost;
         this.cost = cost;
+        this.visited = false;
     }
 
     public Node getNode() {

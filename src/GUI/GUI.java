@@ -96,6 +96,16 @@ public abstract class GUI {
     }
 
     /**
+     * Triggers A* search
+     */
+    protected abstract void aStarSearch();
+
+    /**
+     * Toggles articulation points
+     */
+    protected abstract void toggleArticulationPoints();
+
+    /**
      * Redraws the window (including drawing pane). This is already done
      * whenever a button is pressed or the search box is updated, so you
      * probably won't need to call this.
@@ -258,6 +268,22 @@ public abstract class GUI {
             }
         });
 
+        JButton aStar = new JButton("Find Shortest Path");
+        aStar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                aStarSearch();
+            }
+        });
+
+        JButton artPoints = new JButton("Toggle Articulation Points");
+        artPoints.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                toggleArticulationPoints();
+            }
+        });
+
         // next, make the search box at the top-right. we manually fix
         // it's size, and add an action listener to call your code when
         // the user presses enter.
@@ -326,6 +352,16 @@ public abstract class GUI {
         navigation.add(east);
         controls.add(navigation);
         controls.add(Box.createRigidArea(new Dimension(15, 0)));
+
+        JPanel customButtonArea = new JPanel();
+        customButtonArea.setLayout(new GridLayout(2, 1));
+        customButtonArea.setMaximumSize(new Dimension(100, 50));
+        customButtonArea.add(aStar);
+        customButtonArea.add(artPoints);
+        controls.add(customButtonArea);
+
+        controls.add(Box.createRigidArea(new Dimension(15, 0)));
+
         // glue is another invisible component that grows to take up all the
         // space it can on resize.
         controls.add(Box.createHorizontalGlue());

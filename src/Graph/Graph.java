@@ -27,7 +27,7 @@ public class Graph {
         resetQuadTree();
     }
 
-    public Map<Integer, Node> getNodeList() {
+    public Map<Integer, Node> getNodes() {
         return this.nodeList;
     }
 

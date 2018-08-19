@@ -32,6 +32,7 @@ public class RoadMap extends GUI {
     private Trie trie = new Trie();
     private AStar aStar;
     private ArticulationPoints artPts;
+    private boolean showArtPts = false;
 
     /**
      * Is called when the drawing area is redrawn and performs all the logic for
@@ -44,9 +45,13 @@ public class RoadMap extends GUI {
         this.canvasWidth = this.getDrawingAreaDimension().width;
         this.canvasHeight = this.getDrawingAreaDimension().height;
         if(this.graph.isPopulated()) {
-            List<Node> articPts = this.artPts.findArticulationPoints();
-            for (Node node : articPts) {
-                this.graph.highlight(node);
+            if (this.showArtPts) {
+                List<Node> articPts = this.artPts.findArticulationPoints();
+                for (Node node : articPts) {
+                    this.graph.highlight(node);
+                }
+            } else {
+                this.graph.resetHighlighted();
             }
             graph.draw(g, origin, scale);
         }
@@ -137,6 +142,22 @@ public class RoadMap extends GUI {
         this.graph.setPopulated(true);
         this.aStar = new AStar(this.graph);
         this.artPts = new ArticulationPoints(this.graph);
+    }
+
+    /**
+     * Triggers A* search
+     */
+    @Override
+    protected void aStarSearch() {
+    }
+
+    /**
+     * Toggles articulation points
+     */
+    @Override
+    protected void toggleArticulationPoints() {
+        this.showArtPts = !this.showArtPts;
+        this.redraw();
     }
 
     /**

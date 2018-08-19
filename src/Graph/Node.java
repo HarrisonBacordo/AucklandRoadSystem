@@ -13,6 +13,8 @@ public class Node {
     private List<Edge> outgoingList;
     private List<Edge> incomingList;
     private boolean isHighlighted;
+    private Node previous;
+    private boolean visited;
 
     public Node(int id, double latitude, double longitude) {
         this.id = id;
@@ -20,6 +22,8 @@ public class Node {
         this.incomingList = new ArrayList<>();
         this.outgoingList = new ArrayList<>();
         this.isHighlighted = false;
+        this.previous = null;
+        this.visited = false;
     }
 
     public int getId() {
@@ -40,6 +44,22 @@ public class Node {
 
     public Point getPoint(Location origin, double scale) {
         return this.location.asPoint(origin, scale);
+    }
+
+    public Node getPrevious() {
+        return this.previous;
+    }
+
+    public void setPrevious(Node previous) {
+        this.previous = previous;
+    }
+
+    public boolean isVisited() {
+        return this.visited;
+    }
+
+    public void setVisited(boolean visited) {
+        this.visited = visited;
     }
 
     public boolean isHighlighted() {

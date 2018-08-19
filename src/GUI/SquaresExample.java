@@ -84,6 +84,22 @@ public class SquaresExample extends GUI {
     }
 
     /**
+     * Triggers A* search
+     */
+    @Override
+    protected void aStarSearch() {
+
+    }
+
+    /**
+     * Toggles articulation points
+     */
+    @Override
+    protected void toggleArticulationPoints() {
+
+    }
+
+    /**
      * A simple inner class that stores the data for the squares and has some
      * helper methods.
      */
