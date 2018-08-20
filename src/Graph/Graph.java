@@ -137,7 +137,7 @@ public class Graph {
         this.quadTree = new QuadTree(new Boundary(RoadMap.canvasWidth / 2,
                 RoadMap.canvasHeight / 2,
                 RoadMap.canvasWidth / 2,
-                RoadMap.canvasHeight / 2), 1);
+                RoadMap.canvasHeight / 2), 5);
     }
 
     /**
@@ -166,11 +166,11 @@ public class Graph {
      */
     public void highlight(Node node) {
         node.setHighlighted(true);
-        for (Edge edge : node.getIncomingList()) {
-            this.getRoadOfId(edge.getroadId()).setHighlighted(true);
-        }
-        for (Edge edge : node.getOutgoingList()) {
-            this.getRoadOfId(edge.getroadId()).setHighlighted(true);
-        }
+//        for (Edge edge : node.getIncomingList()) {
+//            this.getRoadOfId(edge.getroadId()).setHighlighted(true);
+//        }
+//        for (Edge edge : node.getOutgoingList()) {
+//            this.getRoadOfId(edge.getroadId()).setHighlighted(true);
+//        }
     }
 }

@@ -114,6 +114,10 @@ public class Parser {
 						graph.getRoadOfId(roadID).addEdge(edge);
 						graph.getNodeOfId(node1ID).addToOutgoingList(edge);
 						graph.getNodeOfId(node2ID).addToIncomingList(edge);
+						if (graph.getRoadOfId(roadID).isOneWay == 1) {
+							graph.getNodeOfId(node1ID).setOneWayEntry(true);
+							edge.setOneWay(true);
+						}
 						return edge;
                     };
 

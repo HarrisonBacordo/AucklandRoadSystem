@@ -35,7 +35,7 @@ public class QuadTree {
      * @return - success or not
      */
     public boolean insert(Node node, Location origin, double scale) {
-//        Ignore if not witthin boundaries
+//        Ignore if not within boundaries
         if (!this.boundary.contains(node.getPoint(origin, scale))) {
             return false;
         }

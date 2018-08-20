@@ -32,4 +32,8 @@ public class SearchNode {
     public double getCost() {
         return this.cost;
     }
+
+    public boolean getVisited() { return this.visited; }
+
+    public void setVisited(boolean visited) { this.visited = visited; }
 }

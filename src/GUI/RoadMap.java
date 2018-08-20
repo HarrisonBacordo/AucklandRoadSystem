@@ -11,6 +11,8 @@ import java.awt.event.MouseWheelEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Represents the overall mapping program, handles all queries by delegating it to lower-level components
@@ -21,15 +23,19 @@ public class RoadMap extends GUI {
     private static final int MOVE_NORTH_VALUE = 100;
     private static final int MOVE_SOUTH_VALUE = -100;
     private static final double SCALE_STEP = 1.5;
+    public static final double MAX_CLICKED_DISTANCE = 0.15;
     public static int canvasWidth;
     public static int canvasHeight;
-    private Location origin = new Location(-193.5, 163.9);
-    private double scale = 6.58;
+    private Location origin = new Location(0, 0);
+    private double scale = 1;
     private Graph graph;
     private Trie trie;
     private AStar aStar;
     private ArticulationPoints artPts;
     private boolean showArtPts = false;
+    private Node current;
+    private Node previous;
+    private Node[] clickHistory = new Node[2];
 
     /**
      * Is called when the drawing area is redrawn and performs all the logic for
@@ -63,8 +69,33 @@ public class RoadMap extends GUI {
     @Override
     protected void onClick(MouseEvent e) {
         this.graph.resetHighlighted();
-        Point point = new Point(e.getX(), e.getY());
-        this.appendTextOutputArea(graph.getNearestNode(point));
+        Location clicked = Location.newFromPoint(e.getPoint(), origin, scale);
+        // find the closest node.
+        double bestDist = Double.MAX_VALUE;
+        Node closest = null;
+
+        for (Node node : graph.getNodes().values()) {
+            double distance = clicked.distance(node.getLocation());
+            if (distance < bestDist) {
+                bestDist = distance;
+                closest = node;
+            }
+        }
+
+        // if it's close enough, highlight it and show some information.
+        if (clicked.distance(closest.getLocation()) < MAX_CLICKED_DISTANCE) {
+            this.current = closest;
+            if (clickHistory[0] == null) {
+                clickHistory[0] = current;
+            }
+            clickHistory[1] = current;
+            this.previous = clickHistory[0];
+            clickHistory[0] = clickHistory[1];
+            graph.highlight(closest);
+            graph.highlight(previous);
+            getTextOutputArea().setText(closest.toString());
+            this.appendTextOutputArea(closest);
+        }
     }
 
     @Override
@@ -136,7 +167,7 @@ public class RoadMap extends GUI {
         this.graph = new Graph(nodes, roads, segments);
         this.graph.setPopulated(true);
         trie = graph.populateTrie();
-        this.aStar = new AStar(this.graph);
+        this.aStar = new AStar();
         this.artPts = new ArticulationPoints();
     }
 
@@ -145,6 +176,11 @@ public class RoadMap extends GUI {
      */
     @Override
     protected void aStarSearch() {
+        List<Edge> path = this.aStar.getPath(this.current, this.previous);
+        for (Edge edge : path) {
+            edge.setHighlight(true);
+        }
+        this.redraw();
     }
 
     /**

@@ -122,7 +122,7 @@ public class ArticulationPoints {
 
     private Node getNextUnvisited() {
         for (Node node : this.graph.getNodes().values()) {
-            if (!node.isVisited()) {
+            if (!node.getVisited()) {
                 return node;
             }
         }

@@ -19,7 +19,9 @@ public class Node {
     private boolean visited;
     private int count;
     private int reachBack;
+    private double cost;
     private Queue<Node> children;
+    private boolean oneWayEntry;
 
     public Node(int id, double latitude, double longitude) {
         this.id = id;
@@ -61,7 +63,7 @@ public class Node {
         this.previous = previous;
     }
 
-    public boolean isVisited() {
+    public boolean getVisited() {
         return this.visited;
     }
 
@@ -105,6 +107,12 @@ public class Node {
         return this.allEdges;
     }
 
+    public void setCost(double cost) { this.cost = cost; }
+
+    public void setOneWayEntry(boolean oneWayEntry) { this.oneWayEntry = oneWayEntry; }
+
+    public boolean isOneWayEntry() { return this.oneWayEntry; }
+
     /**
      * Adds the given edge to the outgoing list
      *
@@ -131,6 +139,15 @@ public class Node {
             neighbours.add(edge.getConnectingNode(this));
         }
         return neighbours;
+    }
+
+    public Edge getEdgeBetween(Node neighborNode){
+        for (Edge edge : this.allEdges){
+            if(edge.getTo() == neighborNode || edge.getFrom() == neighborNode) {
+                return edge;
+            }
+        }
+        return null;
     }
 
     /**

@@ -12,6 +12,8 @@ public class Edge {
     private Node from;
     private Node to;
     private List<Double> coords;
+    private boolean highlight;
+    private boolean isOneWay;
 
     public Edge(int roadId, double length, Node from, Node to, List<Double> coords) {
         this.roadId = roadId;
@@ -19,6 +21,7 @@ public class Edge {
         this.from = from;
         this.to = to;
         this.coords = coords;
+        this.highlight = false;
     }
 
     public int getroadId() {
@@ -37,6 +40,12 @@ public class Edge {
         return this.to;
     }
 
+    public void setHighlight(boolean highlight) { this.highlight = highlight; }
+
+    public boolean IsOneWay() { return this.isOneWay; }
+
+    public void setOneWay(boolean isOneWay) { this.isOneWay = isOneWay; }
+
     //Returns the other node
     public Node getConnectingNode(Node node){
         if(node == this.to) return this.from;
@@ -54,7 +63,7 @@ public class Edge {
     public void draw(Graphics g, Location origin, double scale, boolean highlight) {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setStroke(new BasicStroke(1));
-        Color color = highlight ? Color.RED : Color.BLACK;
+        Color color = highlight || this.highlight ? Color.RED : Color.BLACK;
         g2d.setColor(color);
 //        convert all coordinates to points, and draw the line between the points
         Point p1 = Location.newFromLatLon(this.coords.get(0), this.coords.get(1)).asPoint(origin, scale);
