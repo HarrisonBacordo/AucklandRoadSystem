@@ -37,6 +37,12 @@ public class Edge {
         return this.to;
     }
 
+    //Returns the other node
+    public Node getConnectingNode(Node node){
+        if(node == this.to) return this.from;
+        return this.to;
+    }
+
     /**
      * Draws the edge onto the map
      *

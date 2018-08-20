@@ -8,10 +8,7 @@ import Trie.Trie;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,8 +25,8 @@ public class RoadMap extends GUI {
     public static int canvasHeight;
     private Location origin = new Location(-193.5, 163.9);
     private double scale = 6.58;
-    private Graph graph = new Graph();
-    private Trie trie = new Trie();
+    private Graph graph;
+    private Trie trie;
     private AStar aStar;
     private ArticulationPoints artPts;
     private boolean showArtPts = false;
@@ -42,19 +39,19 @@ public class RoadMap extends GUI {
      */
     @Override
     protected void redraw(Graphics g) {
-        this.canvasWidth = this.getDrawingAreaDimension().width;
-        this.canvasHeight = this.getDrawingAreaDimension().height;
-        if(this.graph.isPopulated()) {
+        if (graph != null) {
+            this.canvasWidth = this.getDrawingAreaDimension().width;
+            this.canvasHeight = this.getDrawingAreaDimension().height;
             if (this.showArtPts) {
-                List<Node> articPts = this.artPts.findArticulationPoints();
+                List<Node> articPts = this.artPts.findArticulationPoints(this.graph);
                 for (Node node : articPts) {
                     this.graph.highlight(node);
                 }
             } else {
-                this.graph.resetHighlighted();
             }
             graph.draw(g, origin, scale);
         }
+
     }
 
     /**
@@ -136,12 +133,11 @@ public class RoadMap extends GUI {
     @Override
     protected void onLoad(File nodes, File roads, File segments, File polygons) {
 //        ORDER MATTERS HERE
-        loadNodes(nodes, graph);
-        loadRoads(roads, graph);
-        loadEdges(segments, graph);
+        this.graph = new Graph(nodes, roads, segments);
         this.graph.setPopulated(true);
+        trie = graph.populateTrie();
         this.aStar = new AStar(this.graph);
-        this.artPts = new ArticulationPoints(this.graph);
+        this.artPts = new ArticulationPoints();
     }
 
     /**
@@ -161,94 +157,14 @@ public class RoadMap extends GUI {
     }
 
     /**
-     * Parses node file and saves it in the graph as a node object
-     *
-     * @param nodes - the nodes file
-     * @param graph - the graph to store the nodes in
-     */
-    private void loadNodes(File nodes, Graph graph) {
-        try {
-            BufferedReader fileReader = new BufferedReader(new FileReader(nodes));
-            String line;
-            while ((line = fileReader.readLine()) != null) {
-                String[] lineValues = line.split("\t");
-                Node node = new Node(
-                        Integer.parseInt(lineValues[0]),
-                        Double.parseDouble(lineValues[1]),
-                        Double.parseDouble(lineValues[2])
-                );
-                graph.addNode(node);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Parses segment file and saves it in the graph as an edge object
-     *
-     * @param edges - the segments file
-     * @param graph - the graph to store the segments in
-     */
-    private void loadEdges(File edges, Graph graph) {
-        try {
-            BufferedReader fileReader = new BufferedReader(new FileReader(edges));
-            String line;
-            fileReader.readLine();
-            while ((line = fileReader.readLine()) != null) {
-                String[] lineValues = line.split("\t");
-                int roadId = Integer.parseInt(lineValues[0]);
-                int fromId = Integer.parseInt(lineValues[2]);
-                int toId = Integer.parseInt(lineValues[3]);
-//                Convert coordinates to doubles
-                List<Double> coords = new ArrayList<>();
-                for (int i = 4; i < lineValues.length; i++) {
-                    coords.add(Double.parseDouble(lineValues[i]));
-                }
-                Edge edge = new Edge(
-                        Integer.parseInt(lineValues[0]),
-                        Double.parseDouble(lineValues[1]),
-                        this.graph.getNodeOfId(fromId),
-                        this.graph.getNodeOfId(toId),
-                        coords
-                );
-                this.graph.getRoadOfId(roadId).addEdge(edge);
-                this.graph.getNodeOfId(toId).addToIncomingList(edge);
-                this.graph.getNodeOfId(fromId).addToOutgoingList(edge);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Parses roads file and saves it in the graph as a road object
-     *
-     * @param roads - the roads file
-     * @param graph - the graph to store the roads in
-     */
-    private void loadRoads(File roads, Graph graph) {
-        try {
-            BufferedReader fileReader = new BufferedReader(new FileReader(roads));
-            String line;
-            fileReader.readLine();
-            while ((line = fileReader.readLine()) != null) {
-                Road road = new Road(line.split("\t"));
-                graph.addRoad(road);
-                this.trie.add(road.label.toCharArray(), road);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
      * Appends information about the given node to the text area
      *
      * @param node - node to print information about
      */
     private void appendTextOutputArea(Node node) {
-        if (node == null) { return; }
+        if (node == null) {
+            return;
+        }
         List<Road> roads = new ArrayList<>();
         for (Edge edge : node.getIncomingList()) {
             roads.add(graph.getRoadOfId(edge.getroadId()));

@@ -3,12 +3,12 @@ package Graph;
 import GUI.RoadMap;
 import QuadTree.Boundary;
 import QuadTree.QuadTree;
+import Trie.Trie;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.io.File;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Represents a graph of the given map.
@@ -19,10 +19,12 @@ public class Graph {
     private QuadTree quadTree;
     private Map<Integer, Road> roadList;
     private boolean populated;
+    private Collection<Edge> edges;
 
-    public Graph() {
-        this.nodeList = new HashMap<>();
-        this.roadList = new HashMap<>();
+    public Graph(File nodes, File roads, File segments) {
+        this.nodeList = Parser.parseNodes(nodes, this);
+        this.roadList = Parser.parseRoads(roads, this);
+        this.edges = Parser.parseSegments(segments, this);
         this.populated = false;
         resetQuadTree();
     }
@@ -90,6 +92,14 @@ public class Graph {
         }
     }
 
+    public Trie populateTrie() {
+        Trie trie = new Trie();
+        for (Road road : this.roadList.values()) {
+            trie.add(road.label.toCharArray(), road);
+        }
+        return trie;
+    }
+
     /**
      * Sets all nodes and roads to not highlight
      */
@@ -115,8 +125,8 @@ public class Graph {
             this.quadTree.insert(node, origin, scale);
             node.draw(g, origin, scale);
         }
-        for (Road road : roadList.values()) {
-            road.draw(g, origin, scale);
+        for (Edge edge : edges) {
+            edge.draw(g, origin, scale, this.getRoadOfId(edge.getroadId()).isHighlighted());
         }
     }
 
@@ -145,8 +155,8 @@ public class Graph {
         return nodes.get(0);
     }
 
-    public List<Node> getAdjacentNodes(Node node) {
-        return node.getAdjacentNodes();
+    public Set<Node> getAdjacentNodes(Node node) {
+        return node.getNeighbours();
     }
 
     /**

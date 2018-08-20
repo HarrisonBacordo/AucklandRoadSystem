@@ -1,8 +1,9 @@
 package Graph;
 
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
+import java.util.Queue;
 
 /**
  * Represents a node/intersection on the map
@@ -12,18 +13,24 @@ public class Node {
     private Location location;
     private List<Edge> outgoingList;
     private List<Edge> incomingList;
+    private List<Edge> allEdges;
     private boolean isHighlighted;
     private Node previous;
     private boolean visited;
+    private int count;
+    private int reachBack;
+    private Queue<Node> children;
 
     public Node(int id, double latitude, double longitude) {
         this.id = id;
         this.location = Location.newFromLatLon(latitude, longitude);
         this.incomingList = new ArrayList<>();
         this.outgoingList = new ArrayList<>();
+        this.allEdges = new ArrayList<>();
         this.isHighlighted = false;
         this.previous = null;
         this.visited = false;
+        this.children = new LinkedList<>();
     }
 
     public int getId() {
@@ -62,12 +69,40 @@ public class Node {
         this.visited = visited;
     }
 
+    public int getCount() {
+        return this.count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public int getReachBack() {
+        return this.reachBack;
+    }
+
+    public void setReachBack(int reachBack) {
+        this.reachBack = reachBack;
+    }
+
+    public Queue<Node> getChildren() {
+        return this.children;
+    }
+
+    public void setChildren(Queue<Node> children) {
+        this.children = children;
+    }
+
     public boolean isHighlighted() {
         return this.isHighlighted;
     }
 
     public void setHighlighted(boolean isHighlighted) {
         this.isHighlighted = isHighlighted;
+    }
+
+    public List<Edge> getAllEdges() {
+        return this.allEdges;
     }
 
     /**
@@ -77,6 +112,7 @@ public class Node {
      */
     public void addToOutgoingList(Edge edge) {
         this.outgoingList.add(edge);
+        this.allEdges.add(edge);
     }
 
     /**
@@ -86,14 +122,15 @@ public class Node {
      */
     public void addToIncomingList(Edge edge) {
         this.incomingList.add(edge);
+        this.allEdges.add(edge);
     }
 
-    public List<Node> getAdjacentNodes() {
-        List<Node> adjacentNodes = new ArrayList<>();
-        for (Edge edge : this.outgoingList) {
-            adjacentNodes.add(edge.getTo());
+    public Set<Node> getNeighbours() {
+        Set<Node> neighbours = new HashSet<>();
+        for (Edge edge : this.allEdges) {
+            neighbours.add(edge.getConnectingNode(this));
         }
-        return adjacentNodes;
+        return neighbours;
     }
 
     /**

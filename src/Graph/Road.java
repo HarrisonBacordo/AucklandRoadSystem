@@ -12,26 +12,27 @@ public class Road {
     public int type;
     public String label;
     public String city;
-    public boolean isOneWay;
+    public int isOneWay;
     public int speed;
     public int roadClass;
-    public boolean isNotForCar;
-    public boolean isNotForPedestrians;
-    public boolean isNotForBicycles;
-    private boolean isHighlighted;
+    public int isNotForCar;
+    public int isNotForPedestrians;
+    public int isNotForBicycles;
+    private boolean  isHighlighted;
     private List<Edge> edgeList;
 
-    public Road(String[] args) {
-        this.roadId = Integer.parseInt(args[0]);
-        this.type = Integer.parseInt(args[1]);
-        this.label = args[2];
-        this.city = args[3];
-        this.isOneWay = Boolean.parseBoolean(args[4]);
-        this.speed = Integer.parseInt(args[5]);
-        this.roadClass = Integer.parseInt(args[6]);
-        this.isNotForCar = Boolean.parseBoolean(args[7]);
-        this.isNotForPedestrians = Boolean.parseBoolean(args[8]);
-        this.isNotForBicycles = Boolean.parseBoolean(args[9]);
+    public Road(int roadId, int type, String label, String city, int isOneWay, int speed, int roadClass, int isNotForCar,
+                int isNotForPedestrians, int isNotForBicycles) {
+        this.roadId = roadId;
+        this.type = type;
+        this.label = label;
+        this.city = city;
+        this.isOneWay = isOneWay;
+        this.speed = speed;
+        this.roadClass = roadClass;
+        this.isNotForCar = isNotForCar;
+        this.isNotForPedestrians = isNotForPedestrians;
+        this.isNotForBicycles = isNotForBicycles;
         this.isHighlighted = false;
         this.edgeList = new ArrayList<>();
     }
