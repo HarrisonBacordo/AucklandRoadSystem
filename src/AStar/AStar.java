@@ -98,22 +98,9 @@ import java.util.PriorityQueue;
  */
 public class AStar {
 
-    //Nothing needs to be declared in the constructor
-    public AStar() {
-    }
-
-    /**
-     * Uses the A* algorithm to find the shorted path between 2 nodes.
-     * Does not re-visit any nodes as there is no node that has a segment going out and then back into it
-     *
-     * @param start
-     * @param goal
-     */
     public ArrayList<Edge> getPath(Node start, Node goal) {
-        //Creates a new priority queue/fringe that queues SearchNodes based on there
         PriorityQueue<SearchNode> fringe = new PriorityQueue<>(new NodeComparator());
 
-        //Keeps track of the nodes that are on the path
         ArrayList<Node> nodesOnPath = new ArrayList<>();
 
         fringe.offer(new SearchNode(start, null, 0, estimate(start, goal)));
@@ -132,7 +119,7 @@ public class AStar {
                 current.setCost(costFromStart);
 
                 if (current == goal) {
-                    Node goalNode = goal; //Backtrack from goal to find the correct path
+                    Node goalNode = goal;
 
                     while (goalNode != null) {
                         nodesOnPath.add(goalNode);
@@ -144,7 +131,6 @@ public class AStar {
                 for (Node neighbor : current.getNeighbours()) {
                     if (!neighbor.getVisited()) {
 
-                        //If road is oneway and this node is not an entry point, cannot enter from this direction
                         if (current.getEdgeBetween(neighbor).IsOneWay() && !current.isOneWayEntry()) continue;
 
                         double costToNeighbor = costFromStart + estimate(neighbor, goal);
@@ -158,13 +144,7 @@ public class AStar {
         return getEdges(nodesOnPath);
     }
 
-    /**
-     * Iterates through the found nodes along the path, finding the segments that connnect them. The segment finding function is
-     * called on the second/end node in each pair of nodes.
-     *
-     * @param nodeOnPath
-     * @return
-     */
+
     private ArrayList<Edge> getEdges(ArrayList<Node> nodeOnPath) {
         ArrayList<Edge
                 > path = new ArrayList<>();
@@ -180,15 +160,7 @@ public class AStar {
         return path;
     }
 
-    /**
-     * Calculates the estimated heuristic cost for the current node to the goal node
-     *
-     * @param current
-     * @param goal
-     * @return
-     */
     private double estimate(Node current, Node goal) {
-        //Uses location class distance
         double x = current.getLocation().x - goal.getLocation().x;
         double y = current.getLocation().y - goal.getLocation().y;
         return Math.hypot(x, y);
